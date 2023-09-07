@@ -1,4 +1,4 @@
-package com.msdev.order_controller_api.service;
+package com.msdev.order_controller_api.security;
 
 
 import com.msdev.order_controller_api.repository.DefaultUserRepository;

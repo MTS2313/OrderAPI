@@ -1,28 +1,23 @@
 package com.msdev.order_controller_api.service;
 
-
-
 import com.msdev.order_controller_api.DTO.DTONewCategory;
 import com.msdev.order_controller_api.DTO.DTOUpdateCategory;
 import com.msdev.order_controller_api.entity.Category;
-import com.msdev.order_controller_api.entity.Product;
 import com.msdev.order_controller_api.repository.CategoryRepository;
-import com.msdev.order_controller_api.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.UUID;
 
 
 @Service
-public class ProductManagerService {
+public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
-    @Autowired
-    ProductRepository productRepository;
-
     public ResponseEntity insertCategory(Category category){
         if(category.getId() == null) {
             return ResponseEntity.ok()
@@ -38,16 +33,13 @@ public class ProductManagerService {
         return ResponseEntity.ok().body(list);
     }
 
-    public  ResponseEntity insertProduct(Product product){
-        return ResponseEntity.ok().body(productRepository.save(product));
-    }
+    public ResponseEntity deleteCategoryById(@RequestParam String id){
+        try {
+            categoryRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("category delete");
+        }catch (Error error){
+            return ResponseEntity.ok().body(error);
+        }
 
-    public ResponseEntity deleteProduct(UUID id){
-        productRepository.deleteById(id);
-        return ResponseEntity.ok().build();
-    }
-
-    public ResponseEntity<List<Product>> listProduct(){
-        return ResponseEntity.ok().body(productRepository.findAll());
     }
 }

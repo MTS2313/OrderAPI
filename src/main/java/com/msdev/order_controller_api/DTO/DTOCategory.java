@@ -1,7 +1,6 @@
 package com.msdev.order_controller_api.DTO;
 
 import com.msdev.order_controller_api.entity.Category;
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

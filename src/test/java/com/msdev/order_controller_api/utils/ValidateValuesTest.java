@@ -1,8 +1,12 @@
 package com.msdev.order_controller_api.utils;
 
-import com.msdev.order_controller_api.customException.PasswordNotAcceptException;
-import com.msdev.order_controller_api.customException.EmailNotAcceptException;
+import com.msdev.order_controller_api.DTO.DTOName;
+import com.msdev.order_controller_api.DTO.DTOPhoneNumber;
+import com.msdev.order_controller_api.customException.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -15,7 +19,7 @@ class ValidateValuesTest {
     @ValueSource(strings = {
             "exemplo.email@dominio.com",
             "usuario123@empresa.net",
-            "user-name@example.co.uk"
+            "user-firstname@example.co.uk"
     })
     public void validEmails(String email) {
         ValidateValues validator = new ValidateValues();
@@ -70,4 +74,37 @@ class ValidateValuesTest {
                 .hasMessageContaining("Password received is not being accepted, Please verify that the password is at least 12 characters long contains least 2 special characters and 1 number integer");
     }
 
+    @ParameterizedTest
+    @CsvSource({"John, Doe", "Alice, Smith", "Bob, Johnson"})
+    void nameIsValid(String firstName, String lastName) {
+        ValidateValues nameValidator = new ValidateValues();
+        DTOName validName = new DTOName(firstName, lastName);
+        assertThat(nameValidator.validName(validName)).isTrue();
+    }
+    @ParameterizedTest
+    @CsvSource({"John3, Doe", "A$lice, Smi#th", "B=ob, Johnson"})
+    void nameNotIsValid(String firstName, String  lastname){
+        ValidateValues nameValidator = new ValidateValues();
+        DTOName invalidName = new DTOName(firstName,lastname);
+        assertThatThrownBy(()-> nameValidator.validName(invalidName)).isInstanceOf(NameNotValidException.class).hasMessageContaining("At firstname sender by you not valid, check it firstname please");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "10,1234-1234"
+    })
+    void phoneValid(String code, String phone){
+        ValidateValues phoneValidator = new ValidateValues();
+        DTOPhoneNumber phoneValid = new DTOPhoneNumber(code,phone,"null");
+        assertThat(phoneValidator.validPhone(phoneValid)).isTrue();
+    }
+    @ParameterizedTest
+    @CsvSource({
+            "D2,134-1234"
+    })
+    void phoneInValid(String code, String phone){
+        ValidateValues phoneValidator = new ValidateValues();
+        DTOPhoneNumber phoneValid = new DTOPhoneNumber(code,phone,"null");
+        assertThatThrownBy(()->phoneValidator.validPhone(phoneValid)).isInstanceOfAny(PhoneNumberNotValidException.class, PhoneNumberDDDNotAcceptException.class);
+    }
 }

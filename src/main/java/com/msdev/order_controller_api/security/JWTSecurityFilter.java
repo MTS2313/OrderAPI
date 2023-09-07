@@ -1,4 +1,4 @@
-package com.msdev.order_controller_api.service;
+package com.msdev.order_controller_api.security;
 
 import com.msdev.order_controller_api.customException.UserNotExistException;
 import com.msdev.order_controller_api.repository.DefaultUserRepository;
@@ -32,7 +32,6 @@ public class JWTSecurityFilter extends OncePerRequestFilter {
                 var login = tokenService.validateToken(token);
                 UserDetails user = defaultUserRepository.findByEmail(login);
                 if(user == null) throw new UserNotExistException();
-
                 var authentication = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
@@ -43,5 +42,4 @@ public class JWTSecurityFilter extends OncePerRequestFilter {
         if(authHeader == null) return null;
         return authHeader.replace("Bearer ", "");
     }
-
 }

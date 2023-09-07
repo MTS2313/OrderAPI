@@ -1,10 +1,11 @@
 package com.msdev.order_controller_api.entity;
 
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,22 +14,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-@Entity
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user_table")
+
 public class Users implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    @Column(nullable = false,name = "user_email")
+    private String id;
+    @Indexed(unique = true)
     private String email;
-    @Column(nullable = false,name = "user_password")
     private String password;
-    @Column(nullable = false, name = "user_role_index")
     private String roles;
-
+    private boolean userExpired;
+    private boolean accountEnable;
+    private boolean accountLocked;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -42,7 +42,7 @@ public class Users implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return this.userExpired;
     }
 
     @Override
@@ -57,6 +57,16 @@ public class Users implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.accountEnable;
+    }
+
+    public void setUserExpired(String  userExpired) {
+        this.userExpired = userExpired == null;
+    }
+    public void setAccountEnable(String accountEnable){
+        this.accountEnable = accountEnable == null;
+    }
+    public void setOccountLocked(String occountLocked){
+        this.accountLocked = occountLocked == null;
     }
 }

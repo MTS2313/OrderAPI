@@ -1,7 +1,8 @@
 package com.msdev.order_controller_api.utils;
 
-import com.msdev.order_controller_api.customException.PasswordNotAcceptException;
-import com.msdev.order_controller_api.customException.EmailNotAcceptException;
+import com.msdev.order_controller_api.DTO.DTOName;
+import com.msdev.order_controller_api.DTO.DTOPhoneNumber;
+import com.msdev.order_controller_api.customException.*;
 import org.springframework.stereotype.Component;
 
 
@@ -27,4 +28,19 @@ public class ValidateValues {
         return patterResult;
     }
 
+    public boolean validName(DTOName name){
+        String nameRegex  = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$";
+        boolean patterResult = Pattern.compile(nameRegex).matcher(String.format(name.firstname(),name.lastname())).matches();
+        if(!patterResult) throw new NameNotValidException();
+        return true;
+    }
+    public boolean validPhone(DTOPhoneNumber dtOphoneNumber){
+        String codeDDDisValid = "^[0-9][0-9]$";
+        String phoneRegex = "^[1-9]{4,5}-?[0-9]{4}$\n";
+        boolean codeResult = Pattern.compile(codeDDDisValid).matcher(dtOphoneNumber.areaCode()).matches();
+        boolean numberResult = Pattern.compile(phoneRegex).matcher(dtOphoneNumber.number()).matches();
+        if(!codeResult) throw new PhoneNumberDDDNotAcceptException();
+        if(!numberResult) throw new PhoneNumberNotValidException();
+        return true;
+    }
 }

@@ -1,6 +1,5 @@
 package com.msdev.order_controller_api.security;
 
-import com.msdev.order_controller_api.service.JWTSecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,16 +27,19 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessio->sessio.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authotize->authotize
-                                .requestMatchers(HttpMethod.POST, "/control/login","/control/register")
-                                .hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/product/manager/*")
-                                .hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/product/manager/*")
-                                .hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET,
-                                        "/product/category/list",
-                                        "/product/product/list")
-                                .permitAll()
+                                .requestMatchers(HttpMethod.POST,"/control/login").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/control/register").permitAll()
+//                                category section
+                                .requestMatchers(HttpMethod.POST, "category/*").hasAnyRole("ADMIN","PRODUCT")
+                                .requestMatchers(HttpMethod.DELETE, "category/delete").hasAnyRole("ADMIN","PRODUCT")
+                                .requestMatchers(HttpMethod.GET, "category/list","product/list").permitAll()
+//                                order section
+                                .requestMatchers(HttpMethod.POST,"order/new").hasRole("USER")
+//                        address end-points
+                                .requestMatchers(HttpMethod.POST, "address/*").permitAll()
+//                        profile section
+                                .requestMatchers(HttpMethod.GET,"profile").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST,"profile/new").hasAnyRole("USER"," ADMIN","PRODUCT","ORDER")
                                 .anyRequest()
                                 .authenticated()
                         ).addFilterBefore(JWTSecurityFilter, UsernamePasswordAuthenticationFilter.class).build();

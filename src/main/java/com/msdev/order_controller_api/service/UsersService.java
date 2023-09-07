@@ -17,7 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ControlManagerService {
+public class UsersService {
     @Autowired
     DefaultUserRepository  defaultUserRepository;
 
@@ -28,15 +28,15 @@ public class ControlManagerService {
 
         DTONewManager newManager = new DTONewManager(users.getEmail(), users.getRoles());
 
-        String getRole = users.getRoles();
+//        String getRole = users.getRoles();
 
-        if(getRole.isEmpty()) {
-            throw new RoleEmptyException(newManager);
-        }
-
-        if(RolesEnum.ROLE_USER.equals(RolesEnum.valueOf(getRole))){
-            throw new DontAccessTheRoleException();
-        }
+//        if(getRole.isEmpty()) {
+//            throw new RoleEmptyException(newManager);
+//        }
+//
+//        if(RolesEnum.ROLE_USER.equals(RolesEnum.valueOf(getRole))){
+//            throw new DontAccessTheRoleException();
+//        }
 
         validateValues.validateEmail(newManager.email());
         validateValues.validPassword(users.getPassword());
