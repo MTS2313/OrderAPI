@@ -2,9 +2,21 @@
 
 Bem-vindo à Order API! Aqui você encontrará uma plataforma para gerenciar pedidos de clientes em uma loja genérica. A API possibilita a interação entre clientes e a loja, além de fornecer funcionalidades para administração dos produtos e pedidos.
 
+# Tecnologias usadas
+
+  - MongoDB
+  - Spring Boot
+  - Spring-security
+
+    ## Tecnologias/tecnicas que estou estudando para possivel implementação.
+    - Docker
+    - Sistema de Cache
+    - Profiling de Aplicação
+    - CDN
+
 ## Descrição
 
-A Order API é uma aplicação desenvolvida em Java utilizando Spring Boot, com suporte ao banco de dados PostgreSQL. Seu principal objetivo é viabilizar o processo de compra e gerenciamento de pedidos de clientes através de uma loja online. A API oferece endpoints tanto para clientes quanto para a equipe da loja, proporcionando uma experiência completa.
+A Order API é uma aplicação desenvolvida em Java utilizando Spring Boot. Seu principal objetivo é viabilizar o processo de compra e gerenciamento de pedidos de clientes através de uma loja online.
 
 ### Funcionalidades da API
 
@@ -22,7 +34,6 @@ A Order API é uma aplicação desenvolvida em Java utilizando Spring Boot, com 
 - [x] Administração de contas de administradores da loja.
 - [ ] Monitoramento de métricas de vendas e atividades.
 
-A API utiliza o banco de dados PostgreSQL para garantir a persistência segura dos dados.
 
 ## Documentação da API
 
