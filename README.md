@@ -53,4 +53,4 @@ Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para entrar em c
 
 ## Licença
 
-Este projeto está sob a Licença MIT - consulte o arquivo [LICENSE](LICENSE) para obter mais detalhes.
+Este projeto está sob a Licença MIT - consulte o arquivo [LICENSE](LICENSE.md) para obter mais detalhes.
